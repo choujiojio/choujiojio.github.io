@@ -2,7 +2,7 @@ function JSQ()
 {
     var today = new Date();
     var yyyy = today.getFullYear();
-    var mm = today.getMonth();
+    var mm = today.getMonth() + 1;
     var dd = today.getDate();
     var h = today.getHours();
     var m = today.getMinutes();

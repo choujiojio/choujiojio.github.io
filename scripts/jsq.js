@@ -62,6 +62,11 @@ function calcDiffYear(beginDT,endDT)
 {
     var beginDTYear = beginDT.getFullYear();
     var endDTYear = endDT.getFullYear();
+
+    //如果到了4月26号，就默认已经到了一周年
+    if(endDT.getMonth+1<=4 && endDT.getDate()<26) 
+    return endDTYear-beginDTYear;
+
     return endDTYear-beginDTYear+1;
 }
 

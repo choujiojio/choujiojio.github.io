@@ -1,22 +1,12 @@
+var CompleteYearNum;
+
 function JSQ()
 {
     
-    var oneYearAfterTheComplete =new Date("2019-04-26 00:28:21");
-    var today;
-    
+    //计算距离完结N年的剩余时间
+    calcNYear_RemainingTime(0);
 
-    var s = setInterval(function(){
-        today=new Date();
-        if(oneYearAfterTheComplete.getTime()-today.getTime()>0){
-            passtime(today,oneYearAfterTheComplete,2);
-        } else {
-            clearInterval(s);
-        }
-        
-    },500);
-
-
-
+    //计算已完结的时间
     execTimeChange();
 }
 
@@ -68,10 +58,66 @@ function passtime(beginDT,endDT,type)
     document.getElementById(type==1?'pass_time':'remaining_time').innerHTML = datediff_dd+"天"+datediff_h+"小时"+datediff_m+"分钟"+datediff_s+"秒";
 }
 
-function readXml()
+function calcDiffYear(beginDT,endDT)
 {
-    
+    var beginDTYear = beginDT.getFullYear();
+    var endDTYear = endDT.getFullYear();
+    return endDTYear-beginDTYear+1;
+}
+
+function mouseover()
+{
+    var completeYear =document.getElementById("completeYear");
+    completeYear.style.cssText="cursor:pointer";    
 
 }
 
+function mouseclick()
+{
+    var nYear = prompt("你想看距离完结几周年的剩余时间?",CompleteYearNum+1);
+    var reg = /^[1-9]\d*$/;
+    if (nYear) {
+        if(!reg.test(nYear))
+        {
+            alert("只能填正整数啊，马飞！");
+            return;
+        }
+        calcNYear_RemainingTime(parseInt(nYear));
+    } 
+}
+var s;
+function calcNYear_RemainingTime(nYear)
+{
+    var completeTime = new Date("2018-04-26 00:28:21");
+    
+    var today=new Date();
+    
+    CompleteYearNum=calcDiffYear(completeTime,today);
+
+    if(nYear!=0) 
+    {
+        if(nYear<CompleteYearNum){
+            alert("只能是大于或等于"+CompleteYearNum+"周年的时间！");
+            return;
+        }else{
+            CompleteYearNum=nYear;
+            clearInterval(s);
+        }
+        
+    }
+    
+    var CompleteNYearTime = new Date(completeTime.setFullYear(completeTime.getFullYear()+CompleteYearNum));
+
+    document.getElementById("completeYear").innerHTML=CompleteYearNum;
+
+    s = setInterval(function(){
+        today=new Date();
+        if(CompleteNYearTime.getTime()-today.getTime()>0){
+            passtime(today,CompleteNYearTime,2);
+        } else {
+            clearInterval(s);
+        }
+        
+    },500);
+}
 
